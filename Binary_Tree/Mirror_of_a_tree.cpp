@@ -1,4 +1,6 @@
 //{ Driver Code Starts
+// Initial Template for C++
+
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -6,17 +8,17 @@ using namespace std;
    and a pointer to right child */
 struct Node {
     int data;
-    struct Node* left;
-    struct Node* right;
+    struct Node *left;
+    struct Node *right;
+
+    Node(int x) {
+        data = x;
+        left = right = NULL;
+    }
 };
-Node* newNode(int val) {
-    Node* temp = new Node;
-    temp->data = val;
-    temp->left = NULL;
-    temp->right = NULL;
-    return temp;
-}
-Node* buildTree(string str) {
+
+// Function to Build Tree
+Node *buildTree(string str) {
     // Corner Case
     if (str.length() == 0 || str[0] == 'N') return NULL;
 
@@ -28,10 +30,10 @@ Node* buildTree(string str) {
     for (string str; iss >> str;) ip.push_back(str);
 
     // Create the root of the tree
-    Node* root = newNode(stoi(ip[0]));
+    Node *root = new Node(stoi(ip[0]));
 
     // Push the root to the queue
-    queue<Node*> queue;
+    queue<Node *> queue;
     queue.push(root);
 
     // Starting from the second element
@@ -39,7 +41,7 @@ Node* buildTree(string str) {
     while (!queue.empty() && i < ip.size()) {
 
         // Get and remove the front of the queue
-        Node* currNode = queue.front();
+        Node *currNode = queue.front();
         queue.pop();
 
         // Get the current node's value from the string
@@ -49,7 +51,7 @@ Node* buildTree(string str) {
         if (currVal != "N") {
 
             // Create the left child for the current node
-            currNode->left = newNode(stoi(currVal));
+            currNode->left = new Node(stoi(currVal));
 
             // Push it to the queue
             queue.push(currNode->left);
@@ -64,7 +66,7 @@ Node* buildTree(string str) {
         if (currVal != "N") {
 
             // Create the right child for the current node
-            currNode->right = newNode(stoi(currVal));
+            currNode->right = new Node(stoi(currVal));
 
             // Push it to the queue
             queue.push(currNode->right);
@@ -75,10 +77,24 @@ Node* buildTree(string str) {
     return root;
 }
 
+/* Helper function to test mirror(). Given a binary
+   search tree, print out its data elements in
+   increasing sorted order.*/
+void inOrder(struct Node *node) {
+    if (node == NULL) return;
+
+    inOrder(node->left);
+    printf("%d ", node->data);
+
+    inOrder(node->right);
+}
+
 
 // } Driver Code Ends
-/* Tree node structure  used in the program
+// function Template for C++
 
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child /
 struct Node
 {
     int data;
@@ -93,23 +109,15 @@ struct Node
 
 class Solution {
   public:
-    // Function to return the diameter of a Binary Tree.
-    
-    int solve(Node* root, int& ans){
-        if(root==NULL) return 0;
+    // Function to convert a binary tree into its mirror tree.
+    void mirror(Node* node) {
+        // code here
+        if(node==NULL) return ;
         
-        int lh = solve(root->left, ans);
-        int rh = solve(root->right, ans);
-        ans = max(ans, lh+rh);
+        mirror(node->left);
+        mirror(node->right);
         
-        return 1+max(lh,rh);
-    }
-    
-    int diameter(Node* root) {
-        // Your code here
-        int ans = 0;
-        solve(root, ans);
-        return ans+1;
+        swap(node->left, node->right);
     }
 };
 
@@ -117,16 +125,18 @@ class Solution {
 
 /* Driver program to test size function*/
 int main() {
-    int t;
-    scanf("%d\n", &t);
-    while (t--) {
-        string s;
-        getline(cin, s);
-        Node* root = buildTree(s);
+    int tc;
+    scanf("%d ", &tc);
+    while (tc--) {
+        string str;
+        getline(cin, str);
+        Node *root = buildTree(str);
         Solution ob;
-        cout << ob.diameter(root) << endl;
+        ob.mirror(root);
+        inOrder(root);
+        cout << "\n";
     }
+
     return 0;
 }
-
 // } Driver Code Ends
