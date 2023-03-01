@@ -60,10 +60,10 @@ class Solution
               ans.push_back(p->data);
               
               if(p->left){
-                  q.push(p->left);
+                q.push(p->left);
               }
               if(p->right){
-                  q.push(p->right);
+                q.push(p->right);
               }
           }
       }
